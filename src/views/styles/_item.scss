@@ -1,0 +1,57 @@
+.items {
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  height: 52px;
+  line-height: 30px;
+  padding: 10px;
+  border-bottom: 1px dotted $gray;
+
+  &:hover {
+    .item-tools {
+      display: block;
+    }
+  }
+
+  &-title {
+    font-size: 1.5em;
+    font-weight: 300;
+
+    &--line-through {
+      text-decoration: line-through;
+    }
+  }
+
+  &-tools {
+    display: none;
+    float: right;
+    color: $dark-gray;
+    transition: display 2s; // DOESN'T WORK ?
+
+    &-button {
+      border: none;
+      background: none;
+      padding: 0;
+
+      &--remove {
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+.item-form {
+  margin: 30px 0 20px 0;
+
+  &-input {
+    width: 100%;
+    padding: .1em 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px dotted $gray;
+    font-size: 2em;
+    font-weight: 300;
+  }
+}

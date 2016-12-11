@@ -1,0 +1,26 @@
+.list-button {
+  display: block;
+  color: $black;
+  padding: 1em .4em;
+  border-bottom: 1px solid $light-gray;
+
+  &:hover, &:focus, &:active {
+    color: lighten($black, 40%);
+  }
+
+  &--title {
+    display: inline-block;
+    max-width: calc(100% - 15px);
+    margin: 0;
+    font-size: 2em;
+    font-weight: 300;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  &--icon {
+    float: right;
+    line-height: 30px;
+  }
+}

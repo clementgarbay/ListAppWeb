@@ -1,0 +1,50 @@
+.checkbox-component {
+  float: left;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  margin-right: 15px;
+  border: 1px solid $light-gray;
+  cursor: pointer;
+
+  &-input {
+    width: inherit;
+    height: inherit;
+    margin: 0 !important;
+    opacity: 0;
+    -webkit-appearance: none;
+    cursor: pointer;
+  }
+
+  &-icon {
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 20px;
+    height: 20px;
+    margin: 4px;
+    pointer-events: none;
+
+    path {
+      fill: none;
+      stroke: $dark-gray;
+      stroke-dasharray: 130, 130; 
+      stroke-dashoffset: 0; 
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 13px;
+      animation-name: draw;
+      animation-duration: .6s;
+    }
+  }
+}
+
+@keyframes draw {
+  from {
+    stroke-dasharray: 0, 130;
+  }
+  to {
+    stroke-dasharray: 130, 130; 
+  }
+}
