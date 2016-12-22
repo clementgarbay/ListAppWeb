@@ -1,48 +1,58 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 class ItemForm extends Component {
+  static propTypes = {
+    createItem: PropTypes.func.isRequired
+  }
+
   constructor() {
     super()
 
-    this.state = { title: '' }
+    this.state = { name: '' }
+
+    this.clearInput = this.clearInput.bind(this)
+    this.onChange = this.onChange.bind(this)
+    this.onKeyUp = this.onKeyUp.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
   }
 
   clearInput() {
-    this.setState({ title: '' })
+    this.setState({ name: '' })
   }
 
-  onChange(event) {
-    this.setState({ title: event.target.value })
+  onChange(event: Event) {
+    this.setState({ name: event.target.value })
   }
 
-  onKeyUp() {
-    // if (event.keyCode === 27) { // enter
-    //   this.clearInput()
-    // }
-  }
-
-  onSubmit(event) {
-    event.preventDefault()
-    const title = this.state.title.trim()
-    if (title.length) {
-      // this.props.createItem(title)
+  onKeyUp(event: Event) {
+    if (event.keyCode === 13) { // enter
+      this.onSubmit(event)
+    } else if (event.keyCode === 27) { // escape
       this.clearInput()
     }
   }
 
-  render() {
+  onSubmit(event: Event) {
+    event.preventDefault()
+    const name = this.state.name.trim()
+    if (name.length) {
+      this.props.createItem(name)
+      this.clearInput()
+    }
+  }
+
+  render(): JSX.Element {
     return (
       <form className="item-form" onSubmit={this.onSubmit} noValidate>
         <input
-          autoComplete="off"
+          type="text"
+          value={this.state.name}
           autoFocus
+          autoComplete="off"
           className="item-form-input"
-          maxLength="64"
           onChange={this.onChange}
           onKeyUp={this.onKeyUp}
           placeholder="New item"
-          type="text"
-          value={this.state.title}
         />
       </form>
     )

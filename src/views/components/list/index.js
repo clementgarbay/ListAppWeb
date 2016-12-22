@@ -1,57 +1,39 @@
 import React, { Component, PropTypes } from 'react'
 import { Grid, Row, Col } from 'react-bootstrap'
+import { connect } from 'react-redux'
+import * as Immutable from 'immutable'
+
+import { itemsActions } from '../../../core/items'
 
 import ItemForm from '../item-form'
 import ItemList from '../item-list'
 
-class List extends Component {
+export class List extends Component {
   static propTypes = {
-    list: PropTypes.object.isRequired
+    createItem: PropTypes.func.isRequired,
+    items: PropTypes.instanceOf(Immutable.List).isRequired,
+    list: PropTypes.object.isRequired,
+    loadItems: PropTypes.func.isRequired,
+    updateItem: PropTypes.func.isRequired
   }
 
-  constructor() {
-    super()
-
-    this.state = {
-      items: [
-        {
-          id: 1,
-          title: 'Acheter des oranges',
-          completed: true
-        },
-        {
-          id: 2,
-          title: 'Prendre rdv chez le coiffeur',
-          completed: true
-        }
-      ]
-    }
-
-    this.updateItem = this.updateItem.bind(this)
+  componentWillMount() {
+    this.props.loadItems()
+    // this.props.filterTasks(this.props.location.query.filter);
   }
 
-  updateItem(selectedItem, changes) {
-    const items = this.state.items
-      .map(item => {
-        if (item.id !== selectedItem.id) return item
-        return Object.assign({}, item, changes)
-      })
-
-    this.setState({items: items})
-  }
-
-  render() {
+  render(): JSX.Element {
     return (
       <Grid bsClass="list">
         <Row>
           <Col xs={12}>
             <h1 className="list-title">{this.props.list.title}</h1>
-            <ItemForm />
+            <ItemForm createItem={this.props.createItem} />
           </Col>
         </Row>
         <Row>
           <Col xs={12}>
-            <ItemList items={this.state.items} updateItem={this.updateItem} />
+            <ItemList items={this.props.items} updateItem={this.props.updateItem} />
           </Col>
         </Row>
       </Grid>
@@ -59,4 +41,18 @@ class List extends Component {
   }
 }
 
-export default List
+// Connect state and dispatch
+
+const mapStateToProps = state => ({
+  items: state.items.items // TODO: review it
+})
+
+const mapDispatchToProps = Object.assign(
+  {},
+  itemsActions
+)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(List)

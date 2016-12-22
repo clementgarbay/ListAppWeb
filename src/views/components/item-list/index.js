@@ -1,8 +1,10 @@
 import React, { PropTypes } from 'react'
+import { List } from 'immutable'
+
 import Item from '../item'
 
-function ItemList({items, updateItem}) {
-  let itemsElements = items.map((item, index) => {
+function ItemList({items, updateItem}): JSX.Element {
+  let itemsElements = items.map((item: Item, index: number): JSX.Element => {
     return (
       <Item
         key={index}
@@ -20,7 +22,7 @@ function ItemList({items, updateItem}) {
 }
 
 ItemList.propTypes = {
-  items: PropTypes.array.isRequired,
+  items: PropTypes.instanceOf(List).isRequired,
   updateItem: PropTypes.func.isRequired
 }
 

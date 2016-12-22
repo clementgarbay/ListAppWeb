@@ -2,9 +2,9 @@ root: true
 
 parser: babel-eslint
 
-plugins: ["react"]
+plugins: ["react", "flowtype"]
 
-extends: ["eslint:recommended", "plugin:react/recommended"]
+extends: ["eslint:recommended", "plugin:react/recommended", "plugin:flowtype/recommended"]
 
 env:
   browser: true
@@ -19,6 +19,10 @@ ecmaFeatures:
 globals:
   firebase: true
 
+settings: 
+  flowtype: 
+    onlyFilesWithFlowAnnotation: false
+
 rules:
   array-bracket-spacing: 0
   array-callback-return: 0
@@ -28,7 +32,7 @@ rules:
   accessor-pairs: 0
   block-scoped-var: 0
   block-spacing: 2
-  brace-style: [2, "stroustrup", {allowSingleLine: true}]
+  brace-style: [2, "1tbs", {allowSingleLine: true}]
   callback-return: 0
   camelcase: [2, {properties: "always"}]
   comma-dangle: 2
@@ -279,3 +283,23 @@ rules:
   react/self-closing-comp: 0
   react/sort-comp: 1
   react/sort-prop-types: 1
+
+  # eslint-plugin-flowtype
+  flowtype/boolean-style: [2, "boolean"]
+  flowtype/define-flow-type: 1
+  flowtype/delimiter-dangle: [2, "never"]
+  flowtype/generic-spacing: [2, "never"]
+  flowtype/no-primitive-constructor-types: 2
+  flowtype/no-weak-types: [2, {Function: false}]
+  flowtype/object-type-delimiter: [2, "comma"]
+  flowtype/require-parameter-type: 2
+  flowtype/require-return-type: [2, "always", {annotateUndefined: "never"}]
+  flowtype/require-valid-file-annotation: 2
+  flowtype/semi: [2, "always"]
+  flowtype/space-after-type-colon: [2, "always"]
+  flowtype/space-before-generic-bracket: [2, "never"]
+  flowtype/space-before-type-colon: [2, "never"]
+  flowtype/type-id-match: [2, "^([A-Z][a-z0-9]+)+Type$"]
+  flowtype/union-intersection-spacing: [2, "always"]
+  flowtype/use-flow-type: 1
+  flowtype/valid-syntax: 1
