@@ -26,6 +26,13 @@
     margin: 4px;
     pointer-events: none;
 
+    &--animate {
+      path {
+        animation-name: draw;
+        animation-duration: .6s;
+      }
+    }
+
     path {
       fill: none;
       stroke: $dark-gray;
@@ -34,8 +41,6 @@
       stroke-linecap: round;
       stroke-linejoin: round;
       stroke-width: 13px;
-      animation-name: draw;
-      animation-duration: .6s;
     }
   }
 }
