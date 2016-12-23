@@ -1,24 +1,14 @@
-import { FirebaseStorage } from '../storage/firebase-storage'
-import { Item } from './item'
 import {
-  CREATE_ITEM_ERROR,
   CREATE_ITEM_SUCCESS,
+  CREATE_ITEM_ERROR,
+  UPDATE_ITEM_SUCCESS,
   UPDATE_ITEM_ERROR,
-  UPDATE_ITEM_SUCCESS
+  DELETE_ITEM_SUCCESS,
+  DELETE_ITEM_ERROR,
+  LOAD_ITEMS_SUCCESS,
+  UNLOAD_ITEMS_SUCCESS
 } from './action-types'
 
-const storage = new FirebaseStorage(Item, {
-  onAdd: createItemSuccess
-}, 'items')
-
-export function createItem(name: string): Function {
-  return (dispatch: Function) => {
-    const item = new Item({name: name})
-    storage.add(item)
-      .then((item: Item): void => dispatch(createItemSuccess(item)))
-      .catch((error: *): void => dispatch(createItemError(error)))
-  }
-}
 
 export function createItemSuccess(item: Item): {} {
   return {
@@ -34,8 +24,43 @@ export function createItemError(error: *): {} {
   }
 }
 
-export function loadItems(): Function {
-  return (dispatch: Function) => {
-    storage.subscribe(dispatch)
+export function updateItemSuccess(item: Item): {} {
+  return {
+    type: UPDATE_ITEM_SUCCESS,
+    payload: item
+  }
+}
+
+export function updateItemError(error: *): {} {
+  return {
+    type: UPDATE_ITEM_ERROR,
+    payload: error
+  }
+}
+
+export function deleteItemSuccess(item: Item): {} {
+  return {
+    type: DELETE_ITEM_SUCCESS,
+    payload: item
+  }
+}
+
+export function deleteItemError(error: *): {} {
+  return {
+    type: DELETE_ITEM_ERROR,
+    payload: error
+  }
+}
+
+export function loadItemsSuccess(items: List<Item>): {} {
+  return {
+    type: LOAD_ITEMS_SUCCESS,
+    payload: items
+  }
+}
+
+export function unloadItemsSuccess(): {} {
+  return {
+    type: UNLOAD_ITEMS_SUCCESS
   }
 }
