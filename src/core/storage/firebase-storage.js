@@ -1,23 +1,26 @@
 // @flow
 
 import firebase from 'firebase'
+import { List, Record } from 'immutable'
 import { firebaseDb } from '../firebase/firebase'
 
 interface StorageCallbacks<T> {
-  onAdd(elem: T): void,
-  onChange(elem: T): void,
-  onLoad(elems: Array<T>): void,
-  onRemove(elem: T): void
+  onCreate(elem: T): void,
+  onUpdate(elem: T): void,
+  onDelete(elem: T): void,
+  onLoad(elems: List<T>): void
 }
 
-export class FirebaseStorage<T> {
+type RecordType = Record<{}> & {toJS(): {}};
 
-  _modelClass: T
+export class FirebaseStorage<T: RecordType> {
+
+  _modelClass: * // Class<T>
   _actions: StorageCallbacks<T>
   _path: ?string
   _ref: firebase.database.Reference
 
-  constructor(modelClass: T, actions: StorageCallbacks<T>, path: ?string = null) {
+  constructor(modelClass: *, actions: StorageCallbacks<T>, path: ?string = null) {
     this._modelClass = modelClass
     this._actions = actions
     this._path = path
@@ -25,81 +28,70 @@ export class FirebaseStorage<T> {
     this._ref = firebaseDb.ref(this._path)
   }
 
-  add(elem: T): Promise<*> {
-    console.log('elem', elem)
-    console.log('this._ref', this._ref)
+  create(elem: T): Promise<*> {
     return new Promise((resolve: Function, reject: Function) => {
-      console.log('ok')
-      this._ref.push(elem, (error: ?*): void => {
-        console.log('error', error)
-        return error ? reject(error) : resolve()
-      })
-    });
+      firebaseDb.ref(this._path)
+        .push(elem.toJS(), (error: ?*): void => error ? reject(error) : resolve())
+    })
   }
 
-  remove(key: string): Promise<*> {
+  update(key: string, values: {}): Promise<*> {
+    return new Promise((resolve: Function, reject: Function) => {
+      const path = (this._path || '') + '/' + key
+      firebaseDb.ref(path)
+        .update(values, (error: ?*): void => error ? reject(error) : resolve())
+    })
+  }
+
+  delete(key: string): Promise<*> {
     return new Promise((resolve: Function, reject: Function) => {
       const path = (this._path || '') + '/' + key
       firebaseDb.ref(path)
         .remove((error: ?*): void => error ? reject(error) : resolve())
-    });
-  }
-
-  set(key: string, value: *): Promise<*> {
-    return new Promise((resolve: Function, reject: Function) => {
-      const path = (this._path || '') + '/' + key
-      firebaseDb.ref(path)
-        .set(value, (error: ?*): void => error ? reject(error) : resolve());
-    });
-  }
-
-  update(key: string, value: *): Promise<*> {
-    return new Promise((resolve: Function, reject: Function) => {
-      const path = (this._path || '') + '/' + key
-      firebaseDb.ref(path)
-        .update(value, (error: ?*): void => error ? reject(error) : resolve());
-    });
+    })
   }
 
   subscribe(emit: Function) {
-    let ref = firebaseDb.ref(this._path)
     let initialized = false
-    let list = []
 
-    console.log('emit', emit)
-
-    ref.once('value', (test) => {
-      initialized = true;
-      console.log('test', test.val())
-      emit(this._actions.onLoad(list))
-    });
-
-    ref.on('child_added', (snapshot: *) => {
-      if (initialized) {
-        emit(this._actions.onAdd(this.unwrapSnapshot(snapshot)));
-      } else {
-        list.push(this.unwrapSnapshot(snapshot));
+    // Note: on initialization, called after child_added
+    this._ref.once('value', (snapshots: firebase.database.DataSnapshot) => {
+      if (!initialized) {
+        let list = new List()
+        snapshots.forEach((snapshot: firebase.database.DataSnapshot) => {
+          list = list.unshift(this.unwrapSnapshot(snapshot))
+        })
+        initialized = true
+        emit(this._actions.onLoad(list))
       }
-    });
+    })
 
-    ref.on('child_changed', (snapshot: *) => {
-      emit(this._actions.onChange(this.unwrapSnapshot(snapshot)));
-    });
+    this._ref.on('child_added', (snapshot: firebase.database.DataSnapshot) => {
+      if (initialized) {
+        emit(this._actions.onCreate(this.unwrapSnapshot(snapshot)))
+      }
+    })
 
-    ref.on('child_removed', (snapshot: *) => {
-      emit(this._actions.onRemove(this.unwrapSnapshot(snapshot)));
-    });
+    this._ref.on('child_changed', (snapshot: firebase.database.DataSnapshot) => {
+      if (initialized) {
+        emit(this._actions.onUpdate(this.unwrapSnapshot(snapshot)))
+      }
+    })
 
-    // this._unsubscribe = () => ref.off()
+    this._ref.on('child_removed', (snapshot: firebase.database.DataSnapshot) => {
+      if (initialized) {
+        emit(this._actions.onDelete(this.unwrapSnapshot(snapshot)))
+      }
+    })
   }
 
-  // unsubscribe() {
-  //   this._unsubscribe()
-  // }
+  unsubscribe() {
+    this._ref.off()
+  }
 
-  unwrapSnapshot(snapshot: *): T {
-    let attrs = snapshot.val();
-    attrs.key = snapshot.key;
-    return new this._modelClass(attrs)
+  unwrapSnapshot(snapshot: firebase.database.DataSnapshot): T {
+    const attrs = snapshot.val()
+    const test = new this._modelClass(attrs)
+    return test
   }
 }
