@@ -18,15 +18,15 @@ class Item extends Component {
 
   toggleStatus() {
     const checked = !this.props.item.completed
-    this.props.updateItem(this.props.item, {completed: checked})
+    this.props.updateItem(this.props.item.id, {completed: checked})
   }
 
   render() {
     return (
       <li className="item">
         <Checkbox checked={this.props.item.completed} onClick={this.toggleStatus} />
-        <label htmlFor={'item-' + this.props.item.id} className={classNames('item-title', {'item-title--line-through': this.props.item.completed})}>
-          {this.props.item.title}
+        <label htmlFor={'item-' + this.props.item.id} className={classNames('item-name', {'item-name--line-through': this.props.item.completed})}>
+          {this.props.item.name}
         </label>
         <div className="item-tools">
           <button className="item-tools-button item-tools-button--edit">

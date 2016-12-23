@@ -3,7 +3,7 @@ import { Grid, Row, Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import * as Immutable from 'immutable'
 
-import { itemsActions } from '../../../core/items'
+import itemsDispatch from '../../../core/items'
 
 import ItemForm from '../item-form'
 import ItemList from '../item-list'
@@ -14,12 +14,17 @@ export class List extends Component {
     items: PropTypes.instanceOf(Immutable.List).isRequired,
     list: PropTypes.object.isRequired,
     loadItems: PropTypes.func.isRequired,
+    unloadItems: PropTypes.func.isRequired,
     updateItem: PropTypes.func.isRequired
   }
 
   componentWillMount() {
     this.props.loadItems()
     // this.props.filterTasks(this.props.location.query.filter);
+  }
+
+  componentWillUnmount() {
+    this.props.unloadItems()
   }
 
   render(): JSX.Element {
@@ -49,7 +54,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = Object.assign(
   {},
-  itemsActions
+  itemsDispatch
 )
 
 export default connect(
