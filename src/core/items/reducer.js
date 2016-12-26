@@ -1,3 +1,7 @@
+// @flow
+
+import type { Action } from '../../flowTypes'
+
 import { List, Record } from 'immutable'
 import {
   CREATE_ITEM_SUCCESS,
@@ -8,11 +12,11 @@ import {
 } from './action-types'
 
 
-const ItemsState = new Record({
+const ItemsState = Record({
   items: new List()
 })
 
-export function itemsReducer(state: State = new ItemsState(), {type, payload}: {}): State {
+export function itemsReducer(state: ItemsState = new ItemsState(), {type, payload}: Action): ItemsState {
   switch (type) {
     case CREATE_ITEM_SUCCESS:
       return state.merge({
