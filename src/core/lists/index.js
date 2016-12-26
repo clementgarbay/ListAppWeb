@@ -1,39 +1,55 @@
-import { FirebaseStorage } from '../storage/firebase-storage'
+// @flow
+
+import { firebaseDb } from '../firebase/firebase'
+import { FirebaseDatabase } from '../firebase/firebase-database'
+import { FirebaseDatabaseListener } from '../firebase/firebase-database-listener'
 import * as listsActions from './actions'
-import { ItemList } from '../models/item'
+import { ItemList } from '../models/item-list'
 
 
-const storage = new FirebaseStorage(ItemList, {
+const PATH = 'lists'
+const refToListen = firebaseDb.ref(PATH)
+
+const database = new FirebaseDatabase(PATH)
+const databaseListener = new FirebaseDatabaseListener(refToListen, {
   onCreate: listsActions.createListSuccess,
   onUpdate: listsActions.updateListSuccess,
   onDelete: listsActions.deleteListSuccess,
   onLoad: listsActions.loadListsSuccess
-}, 'lists')
+}, ItemList)
 
 function createList(title: string): Function {
   return (dispatch: Function) => {
     const itemList = new ItemList({title: title})
-    storage.create(itemList)
+    database.create(itemList)
       .catch((error: *): void => dispatch(listsActions.createListError(error)))
   }
 }
 
 function updateList(key: string, values: {}): Function {
   return (dispatch: Function) => {
-    storage.update(key, values)
+    database.update(key, values)
       .catch((error: *): void => dispatch(listsActions.updateListError(error)))
   }
 }
 
 function loadLists(): Function {
-  return (dispatch: Function) => {
-    storage.subscribe(dispatch)
+  return (dispatch: Function): Promise<*> => {
+    return new Promise((resolve: Function, reject: Function) => {
+      databaseListener.subscribe(dispatch, resolve, reject)
+    })
   }
 }
 
 function unloadLists(): {} {
-  storage.unsubscribe()
+  databaseListener.unsubscribe()
   return listsActions.unloadListsSuccess()
 }
 
-export default { createList, updateList, loadLists, unloadLists }
+function selectList(key: string): Function {
+  return (dispatch: Function) => {
+    dispatch(listsActions.selectListSuccess(key))
+  }
+}
+
+export default { createList, updateList, loadLists, unloadLists, selectList }

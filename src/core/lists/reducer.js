@@ -1,18 +1,25 @@
+// @flow
+
+import type { Action } from '../../flowTypes'
+
 import { List, Record } from 'immutable'
 import {
   CREATE_LIST_SUCCESS,
   UPDATE_LIST_SUCCESS,
   DELETE_LIST_SUCCESS,
   LOAD_LISTS_SUCCESS,
-  UNLOAD_LISTS_SUCCESS
+  UNLOAD_LISTS_SUCCESS,
+  SELECT_LIST_SUCCESS,
+  UNSELECT_LIST_SUCCESS
 } from './action-types'
 
 
-const ListsState = new Record({
-  lists: new List()
+const ListsState = Record({
+  lists: new List(),
+  selectedList: null
 })
 
-export function listsReducer(state: State = new ListsState(), {type, payload}: {}): State {
+export function listsReducer(state: ListsState = new ListsState(), {type, payload}: Action): ListsState {
   switch (type) {
     case CREATE_LIST_SUCCESS:
       return state.merge({
@@ -39,6 +46,16 @@ export function listsReducer(state: State = new ListsState(), {type, payload}: {
     case UNLOAD_LISTS_SUCCESS:
       return state.merge({
         lists: new List()
+      })
+
+    case SELECT_LIST_SUCCESS:
+      return state.merge({
+        selectedList: state.lists.find((itemList: ItemList): boolean => itemList.id === payload)
+      })
+
+    case UNSELECT_LIST_SUCCESS:
+      return state.merge({
+        selectedList: null
       })
 
     default:
