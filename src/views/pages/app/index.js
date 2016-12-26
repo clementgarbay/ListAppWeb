@@ -1,43 +1,48 @@
 import React, { Component, PropTypes } from 'react'
 import { Grid, Row, Col } from 'react-bootstrap'
-import _ from 'lodash/fp'
+import { connect } from 'react-redux'
+import * as Immutable from 'immutable'
+
+import listsDispatch from '../../../core/lists'
+import { ItemList } from '../../../core/models/item-list'
 
 import NavBar from '../../components/navbar'
 import List from '../../components/list'
 
-class App extends Component {
+export class App extends Component {
   static propTypes = {
-    params: PropTypes.object.isRequired
+    listIdFromUrl: PropTypes.string,
+    lists: PropTypes.instanceOf(Immutable.List).isRequired,
+    loadLists: PropTypes.func.isRequired,
+    selectList: PropTypes.func.isRequired,
+    selectedList: PropTypes.instanceOf(ItemList),
+    unloadLists: PropTypes.func.isRequired
   }
 
-  constructor() {
-    super()
+  componentWillMount() {
+    this.props.loadLists()
+      .then((): void => this.props.selectList(this.props.listIdFromUrl))
+  }
 
-    this.state = {
-      lists: [{
-        id: 1,
-        title: 'Courses'
-      }, {
-        id: 2,
-        title: 'Week-end'
-      }]
+  componentDidUpdate(prevProps: {}) {
+    if (this.props.listIdFromUrl !== prevProps.params.listId) {
+      this.props.selectList(this.props.listIdFromUrl)
     }
   }
 
-  render() {
-    const listId = parseInt(this.props.params.listId)
-    const selectedList = _.find(list => list.id === listId)(this.state.lists)
-    const listNotFound = _.isUndefined(selectedList)
+  componentWillUnmount() {
+    this.props.unloadLists()
+  }
 
+  render(): JSX.Element {
     return (
       <Grid>
         <Row className="app">
           <Col xs={3} className="app-left">
-            <NavBar lists={this.state.lists} />
+            <NavBar lists={this.props.lists} />
           </Col>
           <Col xs={9} className="app-right">
-            {(listId && !listNotFound) ? <List list={selectedList} /> : null}
-            {(listId && listNotFound) ? <h2 className="list-not-found">Liste non trouvée</h2> : null}
+            {this.props.selectedList ? <List list={this.props.selectedList} /> : null}
           </Col>
         </Row>
       </Grid>
@@ -45,4 +50,21 @@ class App extends Component {
   }
 }
 
-export default App
+
+// Connect state and dispatch
+
+const mapStateToProps = (state: State, other: {}): {} => ({
+  listIdFromUrl: other.params.listId,
+  lists: state.lists.lists,
+  selectedList: state.lists.selectedList
+})
+
+const mapDispatchToProps = Object.assign(
+  {},
+  listsDispatch
+)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)

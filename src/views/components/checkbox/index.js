@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames'
 
@@ -17,7 +19,7 @@ class Checkbox extends Component {
     this.withAnimation = true
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <div className="checkbox-component">
         <input className="checkbox-component-input" type="checkbox" onClick={this.props.onClick} />

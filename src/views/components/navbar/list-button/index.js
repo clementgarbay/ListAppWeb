@@ -4,15 +4,16 @@ import { Icon } from 'react-fa'
 
 import { getListRoute } from '../../../routes'
 
-export default function ListButton({list}) {
+export default function ListButton({id, title}: {}): JSX.Element {
   return (
-    <Link to={getListRoute(list.id)} className="list-button">
-      <h4 className="list-button--title">{list.title}</h4>
+    <Link to={getListRoute(id)} className="list-button">
+      <h4 className="list-button--title">{title}</h4>
       <Icon className="list-button--icon" name="angle-right" size="2x" />
     </Link>
   )
 }
 
 ListButton.propTypes = {
-  list: PropTypes.object.isRequired
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
 }

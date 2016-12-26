@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
@@ -6,7 +8,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 
 import initStore from './core/store'
 import Root from './views/root'
-import './views/styles/styles.scss'
+import './views/styles/main.scss'
 
 
 const store = initStore()

@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component, PropTypes } from 'react'
 import { Grid, Row, Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
@@ -7,6 +9,11 @@ import itemsDispatch from '../../../core/items'
 
 import ItemForm from '../item-form'
 import ItemList from '../item-list'
+import Loader from '../loader'
+
+type ListState = {
+  isLoading: boolean
+};
 
 export class List extends Component {
   static propTypes = {
@@ -18,13 +25,40 @@ export class List extends Component {
     updateItem: PropTypes.func.isRequired
   }
 
+  state: ListState
+
+  constructor() {
+    super()
+
+    this.state = { isLoading: true }
+
+    this.loadItems = this.loadItems.bind(this)
+    this.createItem = this.createItem.bind(this)
+  }
+
   componentWillMount() {
-    this.props.loadItems()
-    // this.props.filterTasks(this.props.location.query.filter);
+    this.loadItems(this.props.list.id)
+  }
+
+  componentDidUpdate(prevProps: {}) {
+    if (this.props.list.id !== prevProps.list.id) {
+      this.props.unloadItems()
+      this.loadItems(this.props.list.id)
+    }
   }
 
   componentWillUnmount() {
     this.props.unloadItems()
+  }
+
+  loadItems(listId: string) {
+    this.setState({ isLoading: true })
+    this.props.loadItems(listId)
+      .then((): void => this.setState({ isLoading: false }))
+  }
+
+  createItem(name: string) {
+    this.props.createItem(this.props.list.id, name)
   }
 
   render(): JSX.Element {
@@ -33,11 +67,12 @@ export class List extends Component {
         <Row>
           <Col xs={12}>
             <h1 className="list-title">{this.props.list.title}</h1>
-            <ItemForm createItem={this.props.createItem} />
+            <ItemForm createItem={this.createItem} />
           </Col>
         </Row>
         <Row>
           <Col xs={12}>
+            {this.state.isLoading ? <Loader /> : null}
             <ItemList items={this.props.items} updateItem={this.props.updateItem} />
           </Col>
         </Row>
@@ -46,10 +81,11 @@ export class List extends Component {
   }
 }
 
+
 // Connect state and dispatch
 
-const mapStateToProps = state => ({
-  items: state.items.items // TODO: review it
+const mapStateToProps = (state: State): {} => ({
+  items: state.items.items
 })
 
 const mapDispatchToProps = Object.assign(
