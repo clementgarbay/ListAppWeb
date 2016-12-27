@@ -7,7 +7,7 @@ type CheckboxState = {
   withAnimation: boolean
 };
 
-class Checkbox extends Component {
+export default class Checkbox extends Component {
   static propTypes = {
     checked: PropTypes.bool.isRequired,
     onClick: PropTypes.func.isRequired
@@ -21,7 +21,7 @@ class Checkbox extends Component {
 
   state: CheckboxState
 
-  componentWillUpdate() {
+  componentDidMount() {
     this.setState({ withAnimation: true })
   }
 
@@ -36,5 +36,3 @@ class Checkbox extends Component {
     )
   }
 }
-
-export default Checkbox
