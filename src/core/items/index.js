@@ -29,6 +29,13 @@ function updateItem(id: string, values: {}): Function {
   }
 }
 
+function deleteItem(id: string): Function {
+  return (dispatch: Function) => {
+    database.delete(id)
+      .catch((error: *): void => dispatch(itemsActions.deleteItemError(error)))
+  }
+}
+
 function loadItems(listId: string): Function {
   return (dispatch: Function): Promise<*> => {
     return new Promise((resolve: Function, reject: Function) => {
@@ -53,4 +60,4 @@ function unloadItems(): Action {
   return itemsActions.unloadItemsSuccess()
 }
 
-export default { createItem, updateItem, loadItems, unloadItems }
+export default { createItem, updateItem, deleteItem, loadItems, unloadItems }

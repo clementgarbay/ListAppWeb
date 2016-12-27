@@ -6,6 +6,6 @@ Built with React, Redux and Firebase.
 
 # TODO
 
-- [ ] restructure data storage in Firebase (use embedded items)
+- [ ] restructure data storage in Firebase (use embedded items / indexes)
 - [ ] improve type checking (with more Flow type declarations and more annotations)
 - [ ] try to generify `core/items/index` and `core/lists/index`

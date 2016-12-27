@@ -5,18 +5,15 @@ import { List } from 'immutable'
 
 import Item from '../item'
 
-type ItemListState = {
-  items: List<Item>,
-  updateItem: Function
-};
 
-export default function ItemList({items, updateItem}: ItemListState): React.Element<*> {
-  let itemsElements = items.map((item: Item, index: number): React.Element<*> => {
+export default function ItemList({items, updateItem, deleteItem}: typeof ItemList.propTypes): React.Element<*> {
+  let itemsElements = items.map((item: Item): React.Element<*> => {
     return (
       <Item
-        key={index}
+        key={item.id}
         item={item}
         updateItem={updateItem}
+        deleteItem={deleteItem}
       />
     )
   })
@@ -29,6 +26,7 @@ export default function ItemList({items, updateItem}: ItemListState): React.Elem
 }
 
 ItemList.propTypes = {
+  deleteItem: PropTypes.func.isRequired,
   items: PropTypes.instanceOf(List).isRequired,
   updateItem: PropTypes.func.isRequired
 }

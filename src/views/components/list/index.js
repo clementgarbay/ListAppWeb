@@ -18,6 +18,7 @@ type ListState = {
 export class List extends Component {
   static propTypes = {
     createItem: PropTypes.func.isRequired,
+    deleteItem: PropTypes.func.isRequired,
     items: PropTypes.instanceOf(Immutable.List).isRequired,
     list: PropTypes.object.isRequired,
     loadItems: PropTypes.func.isRequired,
@@ -73,7 +74,7 @@ export class List extends Component {
         <Row>
           <Col xs={12}>
             {this.state.isLoading ? <Loader /> : null}
-            <ItemList items={this.props.items} updateItem={this.props.updateItem} />
+            <ItemList items={this.props.items} updateItem={this.props.updateItem} deleteItem={this.props.deleteItem} />
           </Col>
         </Row>
       </Grid>
