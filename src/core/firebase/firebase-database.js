@@ -14,25 +14,18 @@ export class FirebaseDatabase<T: RecordType> {
   }
 
   create(elem: T): Promise<*> {
-    return new Promise((resolve: Function, reject: Function) => {
-      firebaseDb.ref(this._path)
-        .push(elem.toJS(), (error: ?*): void => error ? reject(error) : resolve())
-    })
+    return firebaseDb.ref(this._path).push(elem.toJS())
   }
 
   update(id: string, values: {}): Promise<*> {
-    return new Promise((resolve: Function, reject: Function) => {
-      const path = (this._path || '') + '/' + id
-      firebaseDb.ref(path)
-        .update(values, (error: ?*): void => error ? reject(error) : resolve())
-    })
+    const path = (this._path || '') + '/' + id
+    return firebaseDb.ref(path).update(values)
   }
 
   delete(id: string): Promise<*> {
-    return new Promise((resolve: Function, reject: Function) => {
-      const path = (this._path || '') + '/' + id
-      firebaseDb.ref(path)
-        .remove((error: ?*): void => error ? reject(error) : resolve())
-    })
+    const path = (this._path || '') + '/' + id
+
+    console.log('path', path)
+    return firebaseDb.ref(path).remove()
   }
 }
