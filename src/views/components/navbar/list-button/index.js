@@ -1,10 +1,17 @@
+// @flow
+
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router'
 import { Icon } from 'react-fa'
 
 import { getListRoute } from '../../../routes'
 
-export default function ListButton({id, title}: {}): JSX.Element {
+type ListButtonState = {
+  id: string,
+  title: string
+};
+
+export default function ListButton({id, title}: ListButtonState): React.Element<*> {
   return (
     <Link to={getListRoute(id)} className="list-button">
       <h4 className="list-button--title">{title}</h4>

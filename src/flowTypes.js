@@ -6,5 +6,3 @@ export type Action = {
   type: ActionType,
   payload: ?*
 };
-
-export type RecordType = Record<{}> & {toJS(): {}};

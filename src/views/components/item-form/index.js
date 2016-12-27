@@ -1,6 +1,13 @@
+// @flow
+
 import React, { Component, PropTypes } from 'react';
 
-class ItemForm extends Component {
+
+type ItemFormState = {
+  name: string
+};
+
+export default class ItemForm extends Component {
   static propTypes = {
     createItem: PropTypes.func.isRequired
   }
@@ -16,6 +23,8 @@ class ItemForm extends Component {
     this.onSubmit = this.onSubmit.bind(this)
   }
 
+  state: ItemFormState
+
   clearInput() {
     this.setState({ name: '' })
   }
@@ -24,7 +33,7 @@ class ItemForm extends Component {
     this.setState({ name: event.target.value })
   }
 
-  onKeyUp(event: Event) {
+  onKeyUp(event: KeyboardEvent) {
     if (event.keyCode === 13) { // enter
       this.onSubmit(event)
     } else if (event.keyCode === 27) { // escape
@@ -41,7 +50,7 @@ class ItemForm extends Component {
     }
   }
 
-  render(): JSX.Element {
+  render(): React.Element<*> {
     return (
       <form className="item-form" onSubmit={this.onSubmit} noValidate>
         <input
@@ -58,5 +67,3 @@ class ItemForm extends Component {
     )
   }
 }
-
-export default ItemForm

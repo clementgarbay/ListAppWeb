@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component, PropTypes } from 'react'
 import { Grid, Row, Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
@@ -34,7 +36,7 @@ export class App extends Component {
     this.props.unloadLists()
   }
 
-  render(): JSX.Element {
+  render(): React.Element<*> {
     return (
       <Grid>
         <Row className="app">

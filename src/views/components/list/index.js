@@ -25,8 +25,6 @@ export class List extends Component {
     updateItem: PropTypes.func.isRequired
   }
 
-  state: ListState
-
   constructor() {
     super()
 
@@ -35,6 +33,8 @@ export class List extends Component {
     this.loadItems = this.loadItems.bind(this)
     this.createItem = this.createItem.bind(this)
   }
+
+  state: ListState
 
   componentWillMount() {
     this.loadItems(this.props.list.id)
@@ -61,7 +61,7 @@ export class List extends Component {
     this.props.createItem(this.props.list.id, name)
   }
 
-  render(): JSX.Element {
+  render(): React.Element<*> {
     return (
       <Grid bsClass="list">
         <Row>

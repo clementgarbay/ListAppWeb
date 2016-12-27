@@ -1,17 +1,19 @@
+// @flow
+
 import React, { Component, PropTypes } from 'react'
 import { Icon } from 'react-fa'
 import classNames from 'classnames'
 
 import Checkbox from '../checkbox'
 
-class Item extends Component {
+export default class Item extends Component {
   static propTypes = {
     item: PropTypes.object.isRequired,
     updateItem: PropTypes.func.isRequired
   }
 
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
 
     this.toggleStatus = this.toggleStatus.bind(this)
   }
@@ -21,7 +23,7 @@ class Item extends Component {
     this.props.updateItem(this.props.item.id, {completed: checked})
   }
 
-  render() {
+  render(): React.Element<*> {
     return (
       <li className="item">
         <Checkbox checked={this.props.item.completed} onClick={this.toggleStatus} />
@@ -40,5 +42,3 @@ class Item extends Component {
     )
   }
 }
-
-export default Item
