@@ -32,10 +32,11 @@ export default class Item extends Component {
   render(): React.Element<*> {
     return (
       <li className="item">
-        <Checkbox checked={this.props.item.completed} onClick={this.toggleStatus} />
+        <Checkbox id={'item-' + this.props.item.id} checked={this.props.item.completed} onClick={this.toggleStatus} />
         <label htmlFor={'item-' + this.props.item.id} className={classNames('item-name', {'item-name--line-through': this.props.item.completed})}>
           {this.props.item.name}
         </label>
+        <input type="text" className="item-input" value={this.props.item.name} placeholder={this.props.item.name} />
         <div className="item-tools">
           <button className="item-tools-button item-tools-button--edit">
             <Icon name="pencil" size="2x" />
