@@ -3,6 +3,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Grid, Row, Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
+import { Icon } from 'react-fa'
 import * as Immutable from 'immutable'
 
 import itemsDispatch from '../../../core/items'
@@ -17,11 +18,13 @@ type ListState = {
 
 export class List extends Component {
   static propTypes = {
+    canUndo: PropTypes.bool.isRequired,
     createItem: PropTypes.func.isRequired,
     deleteItem: PropTypes.func.isRequired,
     items: PropTypes.instanceOf(Immutable.List).isRequired,
     list: PropTypes.object.isRequired,
     loadItems: PropTypes.func.isRequired,
+    undoItemDeletion: PropTypes.func.isRequired,
     unloadItems: PropTypes.func.isRequired,
     updateItem: PropTypes.func.isRequired
   }
@@ -67,13 +70,21 @@ export class List extends Component {
       <Grid bsClass="list">
         <Row>
           <Col xs={12}>
-            <h1 className="list-title">{this.props.list.title}</h1>
+            <div className="list-header">
+              <h1 className="list-header-title">{this.props.list.title}</h1>
+              {this.props.canUndo &&
+                <button className="list-header-button" title="Undo last deletion" onClick={this.props.undoItemDeletion}>
+                  <Icon name="undo" />
+                </button>
+              }
+            </div>
             <ItemForm createItem={this.createItem} />
           </Col>
         </Row>
         <Row>
           <Col xs={12}>
-            {this.state.isLoading ? <Loader /> : null}
+            {this.state.isLoading && <Loader />}
+            {(!this.props.items.size && !this.state.isLoading) && <p className="no-items-found">No items found</p>}
             <ItemList items={this.props.items} updateItem={this.props.updateItem} deleteItem={this.props.deleteItem} />
           </Col>
         </Row>
@@ -86,7 +97,8 @@ export class List extends Component {
 // Connect state and dispatch
 
 const mapStateToProps = (state: State): {} => ({
-  items: state.items.items
+  items: state.items.items,
+  canUndo: state.items.lastItemDeleted !== null
 })
 
 const mapDispatchToProps = Object.assign(

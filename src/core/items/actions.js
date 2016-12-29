@@ -10,6 +10,7 @@ import {
   UPDATE_ITEM_ERROR,
   DELETE_ITEM_SUCCESS,
   DELETE_ITEM_ERROR,
+  UNDO_ITEM_DELETION_ERROR,
   LOAD_ITEMS_SUCCESS,
   UNLOAD_ITEMS_SUCCESS
 } from './action-types'
@@ -53,6 +54,13 @@ export function deleteItemSuccess(item: Item): Action {
 export function deleteItemError(error: *): Action {
   return {
     type: DELETE_ITEM_ERROR,
+    payload: error
+  }
+}
+
+export function undoItemDeletionError(error: *): Action {
+  return {
+    type: UNDO_ITEM_DELETION_ERROR,
     payload: error
   }
 }

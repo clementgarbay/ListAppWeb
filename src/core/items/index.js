@@ -36,6 +36,16 @@ function deleteItem(id: string): Function {
   }
 }
 
+function undoItemDeletion(): Function {
+  return (dispatch: Function, getState: Function) => {
+    const item = getState().items.lastItemDeleted
+    if (item) {
+      database.set(item.id, item.toJS())
+        .catch((error: *): void => dispatch(itemsActions.undoItemDeletionError(error)))
+    }
+  }
+}
+
 function loadItems(listId: string): Function {
   return (dispatch: Function): Promise<*> => {
     return new Promise((resolve: Function, reject: Function) => {
@@ -60,4 +70,4 @@ function unloadItems(): Action {
   return itemsActions.unloadItemsSuccess()
 }
 
-export default { createItem, updateItem, deleteItem, loadItems, unloadItems }
+export default { createItem, updateItem, deleteItem, undoItemDeletion, loadItems, unloadItems }
