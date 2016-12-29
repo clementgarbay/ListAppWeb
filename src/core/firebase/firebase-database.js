@@ -17,6 +17,11 @@ export class FirebaseDatabase<T: RecordType> {
     return firebaseDb.ref(this._path).push(elem.toJS())
   }
 
+  set(id: string, values: {}): Promise<*> {
+    const path = (this._path || '') + '/' + id
+    return firebaseDb.ref(path).set(values)
+  }
+
   update(id: string, values: {}): Promise<*> {
     const path = (this._path || '') + '/' + id
     return firebaseDb.ref(path).update(values)
