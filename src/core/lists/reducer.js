@@ -1,5 +1,6 @@
 // @flow
 
+import type { ItemList } from '../models/item-list'
 import type { Action } from '../../flowTypes'
 
 import { List, Record } from 'immutable'

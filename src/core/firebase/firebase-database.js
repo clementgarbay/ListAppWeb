@@ -29,8 +29,6 @@ export class FirebaseDatabase<T: RecordType> {
 
   delete(id: string): Promise<*> {
     const path = (this._path || '') + '/' + id
-
-    console.log('path', path)
     return firebaseDb.ref(path).remove()
   }
 }

@@ -4,7 +4,7 @@
 }
 
 .item {
-  height: 52px;
+  min-height: 52px;
   line-height: 30px;
   padding: 10px;
   border-bottom: 1px dotted $gray;
@@ -15,13 +15,26 @@
     }
   }
 
-  &-name {
+  &-name, &-input {
     font-size: 1.5em;
     font-weight: 300;
+  }
+
+  &-name {
+    max-width: calc(100% - 120px);
 
     &--line-through {
       text-decoration: line-through;
     }
+  }
+
+  &-input {
+    width: calc(100% - 120px);
+    margin: 0;
+    margin-bottom: 5px;
+    padding: 0;
+    border: none;
+    background: #eaeaea;
   }
 
   &-tools {

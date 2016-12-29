@@ -9,3 +9,5 @@ Built with React, Redux and Firebase.
 - [ ] restructure data storage in Firebase (use embedded items / indexes)
 - [ ] improve type checking (with more Flow type declarations and more annotations)
 - [ ] try to generify `core/items/index` and `core/lists/index`
+- [ ] add a filter system (to show / delete only completed items)
+- [ ] improve errors management
