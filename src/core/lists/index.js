@@ -20,7 +20,7 @@ const databaseListener = new FirebaseDatabaseListener(refToListen, {
 
 function createList(title: string): Function {
   return (dispatch: Function) => {
-    const itemList = new ItemList({title: title})
+    const itemList = new ItemList({title: title, creationDate: new Date().toISOString()})
     database.create(itemList)
       .catch((error: *): void => dispatch(listsActions.createListError(error)))
   }

@@ -13,7 +13,7 @@
   padding: 1em .4em;
   border-bottom: 1px solid $light-gray;
 
-  &:hover, &:focus, &:active, &.list-button-new {
+  &:hover, &:focus, &:active {
     color: lighten($black, 40%);
   }
 
