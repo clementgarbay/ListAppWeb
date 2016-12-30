@@ -46,11 +46,11 @@ const config = {
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'url?limit=10000&mimetype=application/font-woff'
+        loader: 'url?name=fonts/[name].[ext]&limit=10000&mimetype=application/font-woff'
       },
       {
-        test: /\.(eot|svg|ttf)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'file'
+        test: /\.(eot|ttf|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file?name=fonts/[name].[ext]'
       }
     ]
   },

@@ -33,6 +33,13 @@ function updateList(key: string, values: {}): Function {
   }
 }
 
+function deleteList(id: string): Function {
+  return (dispatch: Function) => {
+    database.delete(id)
+      .catch((error: *): void => dispatch(listsActions.deleteListError(error)))
+  }
+}
+
 function loadLists(): Function {
   return (dispatch: Function): Promise<*> => {
     return new Promise((resolve: Function, reject: Function) => {
@@ -52,4 +59,4 @@ function selectList(key: string): Function {
   }
 }
 
-export default { createList, updateList, loadLists, unloadLists, selectList }
+export default { createList, updateList, deleteList, loadLists, unloadLists, selectList }

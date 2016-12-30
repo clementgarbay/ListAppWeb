@@ -11,3 +11,4 @@ Built with React, Redux and Firebase.
 - [ ] try to generify `core/items/index` and `core/lists/index`
 - [ ] add a filter system (to show / delete only completed items)
 - [ ] improve errors management
+- [ ] replace `prompt()` and `confirm()` !

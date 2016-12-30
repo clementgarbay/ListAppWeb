@@ -7,6 +7,7 @@ import { Icon } from 'react-fa'
 import * as Immutable from 'immutable'
 
 import itemsDispatch from '../../../core/items'
+import listsDispatch from '../../../core/lists'
 
 import ItemForm from '../item-form'
 import ItemList from '../item-list'
@@ -21,6 +22,7 @@ export class List extends Component {
     canUndo: PropTypes.bool.isRequired,
     createItem: PropTypes.func.isRequired,
     deleteItem: PropTypes.func.isRequired,
+    deleteList: PropTypes.func.isRequired,
     items: PropTypes.instanceOf(Immutable.List).isRequired,
     list: PropTypes.object.isRequired,
     loadItems: PropTypes.func.isRequired,
@@ -36,6 +38,7 @@ export class List extends Component {
 
     this.loadItems = this.loadItems.bind(this)
     this.createItem = this.createItem.bind(this)
+    this.deleteList = this.deleteList.bind(this)
   }
 
   state: ListState
@@ -65,6 +68,14 @@ export class List extends Component {
     this.props.createItem(this.props.list.id, name)
   }
 
+  deleteList() {
+    const res = confirm('Are you sure you want to delete this list and all associated items ?')
+
+    if (res) {
+      this.props.deleteList(this.props.list.id)
+    }
+  }
+
   render(): React.Element<*> {
     return (
       <Grid bsClass="list">
@@ -72,11 +83,16 @@ export class List extends Component {
           <Col xs={12}>
             <div className="list-header">
               <h1 className="list-header-title">{this.props.list.title}</h1>
-              {this.props.canUndo &&
-                <button className="list-header-button" title="Undo last deletion" onClick={this.props.undoItemDeletion}>
-                  <Icon name="undo" />
+              <div className="list-header-tools">
+                {this.props.canUndo &&
+                  <button className="list-header-tools-button" title="Undo last deletion" onClick={this.props.undoItemDeletion}>
+                    <Icon name="undo" />
+                  </button>
+                }
+                <button className="list-header-tools-button list-header-tools-button--delete" title="Delete this list" onClick={this.deleteList}>
+                  <Icon name="trash-o" />
                 </button>
-              }
+              </div>
             </div>
             <ItemForm createItem={this.createItem} />
           </Col>
@@ -103,7 +119,8 @@ const mapStateToProps = (state: State): {} => ({
 
 const mapDispatchToProps = Object.assign(
   {},
-  itemsDispatch
+  itemsDispatch,
+  listsDispatch
 )
 
 export default connect(

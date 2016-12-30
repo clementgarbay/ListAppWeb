@@ -36,7 +36,8 @@ export function listsReducer(state: ListsState = new ListsState(), {type, payloa
 
     case DELETE_LIST_SUCCESS:
       return state.merge({
-        lists: state.lists.filter((itemList: ItemList): boolean => itemList.id !== payload.id)
+        lists: state.lists.filter((itemList: ItemList): boolean => itemList.id !== payload.id),
+        selectedList: (state.selectedList.id === payload.id) ? null : state.selectedList
       })
 
     case LOAD_LISTS_SUCCESS:
