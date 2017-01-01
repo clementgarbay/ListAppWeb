@@ -8,18 +8,13 @@
     "build": "npm run clean && cross-env NODE_ENV=production webpack --display-chunks --progress",
     "clean": "rm -rf dist",
     "lint": "eslint -c .eslintrc.yml *.js src",
-    "precommit-msg": "echo 'Pre-commit checks...' && exit 0",
-    "start": "cross-env NODE_ENV=development webpack-dev-server --progress"
+    "start": "cross-env NODE_ENV=development webpack-dev-server --progress",
+    "deploy": "npm run build && scp -P $cosmosPort -r dist clement@cosmos:$cosmosAppsPath/list-app"
   },
-  "pre-commit": [
-    "precommit-msg",
-    "lint"
-  ],
   "dependencies": {
     "bootstrap-sass": "^3.3.7",
     "firebase": "^3.6.4",
     "immutable": "^3.8.1",
-    "lodash": "^4.17.2",
     "react": "^15.4.1",
     "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.1",
@@ -49,7 +44,6 @@
     "file-loader": "^0.9.0",
     "html-webpack-plugin": "^2.24.1",
     "node-sass": "^3.13.1",
-    "pre-commit": "^1.2.0",
     "react-hot-loader": "3.0.0-beta.6",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
