@@ -47,10 +47,7 @@ export function itemsReducer(state: ItemsState = new ItemsState(), {type, payloa
       })
 
     case UNLOAD_ITEMS_SUCCESS:
-      return state.merge({
-        items: new List(),
-        lastItemDeleted: null
-      })
+      return new ItemsState()
 
     default:
       return state

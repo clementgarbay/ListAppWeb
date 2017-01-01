@@ -42,13 +42,12 @@ export function listsReducer(state: ListsState = new ListsState(), {type, payloa
 
     case LOAD_LISTS_SUCCESS:
       return state.merge({
-        lists: payload
+        lists: payload,
+        selectedList: null
       })
 
     case UNLOAD_LISTS_SUCCESS:
-      return state.merge({
-        lists: new List()
-      })
+      return new ListsState()
 
     case SELECT_LIST_SUCCESS:
       return state.merge({

@@ -15,7 +15,8 @@ export default class Sidebar extends Component {
   static propTypes = {
     createList: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    lists: PropTypes.instanceOf(Immutable.List).isRequired
+    lists: PropTypes.instanceOf(Immutable.List).isRequired,
+    signOut: PropTypes.func.isRequired
   }
 
   constructor() {
@@ -36,7 +37,9 @@ export default class Sidebar extends Component {
     return (
       <div className="sidebar">
         <div className="sidebar-header">
-          <Icon className="sidebar-header-icon" name="check-square-o" size="4x" />
+          <button className="sidebar-header-button" onClick={this.props.signOut}>
+            <Icon className="sidebar-header-button-icon" name="check-square-o" size="4x" />
+          </button>
         </div>
         <div className="sidebar-lists">
           {this.props.isLoading && <Loader />}

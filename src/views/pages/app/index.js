@@ -1,12 +1,16 @@
 // @flow
 
+import type { Router } from 'react-router'
+
 import React, { Component, PropTypes } from 'react'
 import { Grid, Row, Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import * as Immutable from 'immutable'
 
+import authDispatch from '../../../core/auth'
 import listsDispatch from '../../../core/lists'
 import { ItemList } from '../../../core/models/item-list'
+import { paths } from '../../routes'
 
 import Sidebar from '../../components/sidebar'
 import List from '../../components/list'
@@ -22,7 +26,9 @@ type AppProps = {
   loadLists: Function,
   selectList: Function,
   selectedList: ItemList,
-  unloadLists: Function
+  signOut: Function,
+  unloadLists: Function,
+  router: Router.InjectedRouter
 };
 
 export class App extends Component {
@@ -31,8 +37,10 @@ export class App extends Component {
     listIdFromUrl: PropTypes.string,
     lists: PropTypes.instanceOf(Immutable.List).isRequired,
     loadLists: PropTypes.func.isRequired,
+    router: PropTypes.object.isRequired,
     selectList: PropTypes.func.isRequired,
     selectedList: PropTypes.instanceOf(ItemList),
+    signOut: PropTypes.func.isRequired,
     unloadLists: PropTypes.func.isRequired
   }
 
@@ -40,6 +48,8 @@ export class App extends Component {
     super()
 
     this.state = { isLoading: true }
+
+    this.signOut = this.signOut.bind(this)
   }
 
   state: AppState
@@ -64,12 +74,17 @@ export class App extends Component {
 
   props: AppProps
 
+  signOut() {
+    this.props.signOut()
+      .then((): void => this.props.router.replace(paths.SIGN_IN))
+  }
+
   render(): React.Element<*> {
     return (
       <Grid>
         <Row className="app">
           <Col xs={3} className="app-left">
-            <Sidebar isLoading={this.state.isLoading} lists={this.props.lists} createList={this.props.createList} />
+            <Sidebar isLoading={this.state.isLoading} lists={this.props.lists} createList={this.props.createList} signOut={this.signOut} />
           </Col>
           <Col xs={9} className="app-right">
             {this.props.selectedList ? <List list={this.props.selectedList} /> : null}
@@ -91,6 +106,7 @@ const mapStateToProps = (state: {}, other: {}): {} => ({
 
 const mapDispatchToProps = Object.assign(
   {},
+  authDispatch,
   listsDispatch
 )
 

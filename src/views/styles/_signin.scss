@@ -1,0 +1,37 @@
+.signin {
+  height: 100vh;
+  background-color: $primary;
+  text-align: center;
+
+  &-header {
+    &-icon {
+      margin-top: 1em;
+      color: $white;
+      font-size: 8em;
+    }
+  }
+
+  &-auth-providers {
+    margin-top: 12em;
+
+    .button {
+      line-height: 28px;
+      margin: 0 0 10px 0;
+      padding: .8em 1em;
+      color: $primary;
+      border: none;
+      background-color: $white;
+      box-shadow: 0 0 4px #6b461e;
+      transition: box-shadow .1s;
+
+      &:hover {
+        box-shadow: 0 0 10px #6b461e;
+      }
+
+      &-icon {
+        float: left;
+        margin-right: 15px;
+      }
+    }
+  }
+}

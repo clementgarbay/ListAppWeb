@@ -1,31 +1,53 @@
+// @flow
+
 import App from './pages/app'
-import Login from './pages/login'
+import SignIn from './pages/sign-in'
+import { isAuthenticated } from '../core/auth'
 
 export const paths = {
   ROOT: '/',
-  LIST: '/:listId',
-  LOGIN: '/login'
+  LIST: '/list/:listId',
+  SIGN_IN: '/signin'
 }
 
-export const getListRoute = listId => {
+function requireAuthentication(state: {}): Function {
+  return (nextState: {}, replace: Function) => {
+    if (!isAuthenticated(state)) {
+      replace(paths.SIGN_IN)
+    }
+  }
+}
+
+export const getListRoute = (listId: string): string => {
   return paths.LIST.replace(':listId', listId)
 }
 
-export const getRoutes = () => {
-  return [
-    {
-      path: paths.LOGIN,
-      component: Login
-    },
-    {
-      path: paths.ROOT,
-      component: App
-    },
-    {
-      path: paths.LIST,
-      component: App
-    }
-  ]
+export const getRoutes = (getState: Function): {} => {
+  return {
+    path: paths.ROOT,
+    childRoutes: [
+      {
+        indexRoute: {
+          component: App,
+          onEnter: requireAuthentication(getState())
+        }
+      },
+      {
+        path: paths.SIGN_IN,
+        component: SignIn,
+        onEnter: (nextState: {}, replace: Function) => {
+          if (isAuthenticated(getState())) {
+            replace(paths.ROOT)
+          }
+        }
+      },
+      {
+        path: paths.LIST,
+        component: App,
+        onEnter: requireAuthentication(getState())
+      }
+    ]
+  }
 }
 
 

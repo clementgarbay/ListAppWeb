@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react'
 import { Icon } from 'react-fa'
 
 export default class NewListButton extends Component {

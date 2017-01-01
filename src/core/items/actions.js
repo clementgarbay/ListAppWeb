@@ -1,8 +1,9 @@
 // @flow
 
+import type { List } from 'immutable'
 import type { Action } from '../../flowTypes'
+import type { Item } from '../models/item'
 
-import { Item } from '../models/item'
 import {
   CREATE_ITEM_SUCCESS,
   CREATE_ITEM_ERROR,
@@ -74,6 +75,7 @@ export function loadItemsSuccess(items: List<Item>): Action {
 
 export function unloadItemsSuccess(): Action {
   return {
-    type: UNLOAD_ITEMS_SUCCESS
+    type: UNLOAD_ITEMS_SUCCESS,
+    payload: null
   }
 }

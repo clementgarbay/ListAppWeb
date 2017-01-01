@@ -1,7 +1,25 @@
 .sidebar {
-  &-header-icon {
+  &-header-button {
+    height: 52px;
     margin: 20px 0 30px;
-    color: $primary;
+    padding: 0;
+    border: none;
+    background: none;
+
+    &-icon {
+      color: $primary;
+
+      &:hover {
+        line-height: 52px;
+        color: $dark-gray;
+        cursor: pointer;
+        transition: color .1s;
+
+        &:before {
+          content: "\f08b"; // sign-out
+        }
+      }
+    }
   }
 }
 
