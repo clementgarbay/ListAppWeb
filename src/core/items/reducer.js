@@ -13,7 +13,7 @@ import {
 } from './action-types'
 
 
-const ItemsState = Record({
+export const ItemsState = Record({
   items: new List(),
   lastItemDeleted: null
 })

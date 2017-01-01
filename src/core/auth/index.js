@@ -5,8 +5,12 @@ import { firebaseAuth } from '../firebase/firebase'
 import * as authActions from './actions'
 
 
+export function getUserId(state: {}): ?string {
+  return state.auth.userId
+}
+
 export function isAuthenticated(state: {}): boolean {
-  return state.auth.userId !== null
+  return getUserId(state) !== null
 }
 
 export function initAuth(dispatch: Function): Promise<*> {

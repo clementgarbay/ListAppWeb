@@ -1,5 +1,9 @@
 // @flow
 
+import type { State } from '../../../flowTypes'
+import * as ItemListModel from '../../../core/models/item-list'
+import * as ItemModel from '../../../core/models/item'
+
 import React, { Component, PropTypes } from 'react'
 import { Grid, Row, Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
@@ -17,7 +21,20 @@ type ListState = {
   isLoading: boolean
 };
 
-export class List extends Component {
+type ListProps = {
+  canUndo: boolean,
+  createItem: Function,
+  deleteItem: Function,
+  deleteList: Function,
+  items: Immutable.List<ItemModel.Item>,
+  list: ItemListModel.ItemList,
+  loadItems: Function,
+  undoItemDeletion: Function,
+  unloadItems: Function,
+  updateItem: Function
+};
+
+class List extends Component {
   static propTypes = {
     canUndo: PropTypes.bool.isRequired,
     createItem: PropTypes.func.isRequired,
@@ -47,7 +64,7 @@ export class List extends Component {
     this.loadItems(this.props.list.id)
   }
 
-  componentDidUpdate(prevProps: {}) {
+  componentDidUpdate(prevProps: ListProps) {
     if (this.props.list.id !== prevProps.list.id) {
       this.props.unloadItems()
       this.loadItems(this.props.list.id)
@@ -57,6 +74,8 @@ export class List extends Component {
   componentWillUnmount() {
     this.props.unloadItems()
   }
+
+  props: ListProps
 
   loadItems(listId: string) {
     this.setState({ isLoading: true })
@@ -108,9 +127,6 @@ export class List extends Component {
     )
   }
 }
-
-
-// Connect state and dispatch
 
 const mapStateToProps = (state: State): {} => ({
   items: state.items.items,

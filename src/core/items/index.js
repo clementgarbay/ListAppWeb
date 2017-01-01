@@ -8,7 +8,6 @@ import { FirebaseDatabaseListener } from '../firebase/firebase-database-listener
 import * as itemsActions from './actions'
 import { Item } from '../models/item'
 
-
 const PATH = 'items'
 
 const database = new FirebaseDatabase(PATH)

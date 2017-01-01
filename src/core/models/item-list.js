@@ -1,6 +1,8 @@
+// @flow
+
 import { Record } from 'immutable'
 
-export const ItemList = new Record({
+export const ItemList = Record({
   id: null,
   title: null,
   owner: null,

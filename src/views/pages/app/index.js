@@ -1,6 +1,7 @@
 // @flow
 
 import type { Router } from 'react-router'
+import type { State } from '../../../flowTypes'
 
 import React, { Component, PropTypes } from 'react'
 import { Grid, Row, Col } from 'react-bootstrap'
@@ -31,7 +32,7 @@ type AppProps = {
   router: Router.InjectedRouter
 };
 
-export class App extends Component {
+class App extends Component {
   static propTypes = {
     createList: PropTypes.func.isRequired,
     listIdFromUrl: PropTypes.string,
@@ -95,10 +96,7 @@ export class App extends Component {
   }
 }
 
-
-// Connect state and dispatch
-
-const mapStateToProps = (state: {}, other: {}): {} => ({
+const mapStateToProps = (state: State, other: {}): {} => ({
   listIdFromUrl: other.params.listId,
   lists: state.lists.lists,
   selectedList: state.lists.selectedList

@@ -15,7 +15,7 @@ import {
 } from './action-types'
 
 
-const ListsState = Record({
+export const ListsState = Record({
   lists: new List(),
   selectedList: null
 })

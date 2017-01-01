@@ -14,7 +14,7 @@ type SignInProps = {
   router: Router.InjectedRouter
 };
 
-export class SignIn extends Component {
+class SignIn extends Component {
   static propTypes = {
     router: PropTypes.object.isRequired,
     signIn: PropTypes.func.isRequired
@@ -30,9 +30,7 @@ export class SignIn extends Component {
 
   signIn() {
     this.props.signIn()
-      .then((): void => {
-        this.props.router.replace(paths.ROOT) // TODO
-      })
+      .then((): void => this.props.router.replace(paths.ROOT))
   }
 
   render(): React.Element<*> {
@@ -51,7 +49,6 @@ export class SignIn extends Component {
     )
   }
 }
-
 
 const mapDispatchToProps = Object.assign(
   {},

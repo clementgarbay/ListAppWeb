@@ -9,7 +9,7 @@ import {
 } from './action-types'
 
 
-const AuthState = Record({
+export const AuthState = Record({
   userId: null
 })
 

@@ -8,8 +8,6 @@ Built with React, Redux and Firebase.
 
 ## TODO
 
-- [ ] add authentication
-- [ ] restructure data storage in Firebase (use embedded items / indexes)
 - [ ] improve type checking (with more Flow type declarations and more annotations)
 - [ ] try to generify `core/items/index` and `core/lists/index`
 - [ ] add a filter system (for instance: to show only completed items)
