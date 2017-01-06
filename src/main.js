@@ -3,7 +3,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
-import { browserHistory } from 'react-router'
+import { hashHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 
 import initStore from './core/store'
@@ -13,7 +13,7 @@ import './views/styles/main.scss'
 
 
 const store = initStore()
-const syncedHistory = syncHistoryWithStore(browserHistory, store)
+const syncedHistory = syncHistoryWithStore(hashHistory, store)
 
 initAuth(store.dispatch)
   .then(() => {
