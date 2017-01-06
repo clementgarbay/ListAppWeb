@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const WebpackMd5Hash = require('webpack-md5-hash')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const path = require('path')
 
 const NODE_ENV = process.env.NODE_ENV
@@ -62,6 +63,23 @@ const config = {
     new HtmlWebpackPlugin({
       template: './index.html',
       inject: 'body'
+    }),
+    new FaviconsWebpackPlugin({
+      logo: './favicon.png',
+      title: 'ListApp',
+      emitStats: false,
+      icons: {
+        android: false,
+        appleIcon: false,
+        appleStartup: false,
+        coast: false,
+        favicons: true,
+        firefox: false,
+        opengraph: false,
+        twitter: false,
+        yandex: false,
+        windows: false
+      }
     })
   ],
 
